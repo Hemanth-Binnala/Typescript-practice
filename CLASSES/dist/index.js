@@ -1,80 +1,112 @@
-
 console.log("Hey bubu !!!!!!");
-export {};
-//# sourceMappingURL=index.js.map
-
-class Player{
-    // constructor(){
-    //     console.log("in constructor ")
-    // }
-    static description = "player in game"; // same for all
-     score = 0;    // CLASS fIELD
-     lives = 10;   // CLASS fIELD
-     #marks = 89;  // PRIVATE FIELD CAN BE ACCESSED ONLY FROM THE CLASS like getmarks
-    constructor(first,last){  // CONSTRUCTOR
-       this.first = first;
-       this.last = last;
-    //    this.score = 0;
-    //    this.lives = 10;
+// class Player{
+//     public readonly first : string;
+//     public readonly last : string;
+//     private score: number =0;      // in JS we use # for private but the error comes only during compilation but here it is on beforehand
+//     constructor(first:string,last:string){
+//         this.first = first;
+//         this.last = last;
+//     }
+//    private secretMethod(){
+//         console.log("it is a secret")
+//     }
+// }
+// const Jack = new Player("Jack","Sparrow");
+// Jack.first = "sai" -- can't do this bcz it is readonly
+// In TS all properties are public by default and can make private.
+// Jack.score -- doen't work as it is private
+///////////SHORT HAND PROPERTY////////////////
+class Player {
+    // public readonly first : string;
+    // public readonly last : string;
+    // private score: number =0;      // in JS we use # for private but the error comes only during compilation but here it is on beforehand
+    constructor(first, last, 
+    // private _score : number
+    _score) {
+        this.first = first;
+        this.last = last;
+        this._score = _score;
     }
-    taunt(){
-        console.log("BUbuuuuuuu");
+    secretMethod() {
+        console.log("it is a secret");
     }
-    get fullName(){                         // GETTER
-        return `${this.first} ${this.last}`
+    get fullName() {
+        return `${this.first} ${this.last}`;
     }
-
-    set fullName(newName){
-         const [first,last] = newName.split("");
-         this.first = first;
-         this.last = last;
+    get score() {
+        return this._score;
     }
-
-    getMarks(){
-        return this.#marks;
-    }
-
-    set score (newScore){
-        if(newScore < 0){
-             throw new Error("score must be valid")
+    set score(newScore) {
+        if (newScore < 0) {
+            throw new Error("wrong");
         }
-        this.score = newScore;
-    }
-
-    setMarks(newMarks){
-        this.#marks = newMarks;
-    }
-    looseLife(){
-        this.lives -= 1;
-    }
-};
-
-const player1 = new Player("jack",'sparrow');
-player1.taunt();
-console.log(player1);
-player1.looseLife();
-console.log(player1);
-console.log(player1.first);
-console.log(player1.last);
-console.log(player1.getMarks());
-player1.setMarks(76);
-console.log(player1.getMarks());
-console.log(player1.fullName);  // call the getter as property not as method
-
-const player2 = new Player("bubu","dudu");
-player2.taunt();
-
-console.log(Player.description);
-
-class AdminPlayer extends Player{
-    isAdmin = true;
-    constructor(first,last,powers){
-        super(first,last); // inherits parent class constructor
-        this.powers = powers;
+        this._score = newScore;
     }
 }
-
-const admin = new AdminPlayer("ra","vi",["shakthi","maruthi"]);
-console.log(admin);
-admin.taunt();
-admin.isadmin;
+class superPlayer extends Player {
+    constructor() {
+        super(...arguments);
+        this.isAdmin = true;
+    }
+    maxScore() {
+        this._score = 9999999; // won't work as it is private but will work if protected
+        this._score = 9999999; // will work with protected -- can be accessed in child classes
+    }
+}
+const Jack = new Player("Jack", "Sparrow", 0);
+Jack.fullName;
+Jack.score; // GETTER
+Jack.score = 99; // SETTER
+class Bike {
+    // color = "red";
+    constructor(color) {
+        this.color = color;
+    }
+}
+class Jacket {
+    // color = "red";
+    constructor(brand, color) {
+        this.brand = brand;
+        this.color = color;
+    }
+    print() {
+        console.log(`${this.color} ${this.brand}`);
+    }
+}
+const bike1 = new Bike('red');
+const jacket1 = new Jacket("Nike", "black");
+///////////ABSTRACT CLASSES////////////////////////
+class Employee {
+    constructor(first, last) {
+        this.first = first;
+        this.last = last;
+    }
+    greet() {
+        console.log("hello");
+    }
+}
+class FullTimeEmployee extends Employee {
+    constructor(first, last, salary) {
+        super(first, last);
+        this.salary = salary;
+    }
+    getpay() {
+        return this.salary;
+    }
+}
+class partTimeEmployee extends Employee {
+    constructor(first, last, hourlyRate, hoursWored) {
+        super(first, last);
+        this.hourlyRate = hourlyRate;
+        this.hoursWored = hoursWored;
+    }
+    getpay() {
+        return this.hourlyRate * this.hoursWored;
+    }
+}
+const betty = new FullTimeEmployee("betty", "white", 97000);
+console.log(betty.getpay());
+const bill = new partTimeEmployee("bIll", "billersaon", 34, 56);
+console.log(bill.getpay());
+export {};
+//# sourceMappingURL=index.js.map
