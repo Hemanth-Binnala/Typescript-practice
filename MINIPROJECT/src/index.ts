@@ -100,3 +100,111 @@ function createTodoElement(todo : Todo){
 
 form.addEventListener("submit",handleSubmit);
 
+/////////////////////////GENERICS/////////////////////////
+
+// Generics are those which the input type and return same type.
+
+
+function identity<Type>(item : Type) : Type{
+    return item;
+}
+// insteat of "Type" we can write "T"
+function identity1<T>(item : T) : T{
+    return item;
+}
+
+
+identity<number>(7);
+identity1<string>("hello");
+
+function getRandomElement<T>(list : T[]) : T {
+    if (list.length === 0) {
+        throw new Error("List cannot be empty");
+    }
+    const randIdx = Math.floor(Math.random() * list.length);
+    return list[randIdx]!;
+}
+
+console.log(getRandomElement<string>(["a","b","c"]));
+console.log(getRandomElement<number>([1,34,556,345,344]));
+
+getRandomElement(["afsdfs","dsadb","c"]) // with the list input it can read the type and is called Inferred Generic type
+
+//  GENERICS WITH MULTIPLE OBJECTS // for multiple use differnt words each 
+
+function merge<T,U>(obj1 : T,obj2 : U) : T & U{
+    return{
+        ...obj1,
+        ...obj2
+    }
+}
+
+const combObj = merge({name : "colt"},{pets : ["blue","elton"]})
+merge({name : "colt"},9) // no error though 9 is non obj
+
+// as of now in mege if we send one obj and other string 
+// there won't be any error but non object won't go to comBobj so to ensure
+// in merge we have only obj we need to add type constraints.
+
+function merge1<T extends object,U extends object>(obj1 : T,obj2 : U) : T & U{
+    return{
+        ...obj1,
+        ...obj2
+    }
+}
+
+// merge1({name : "colt"},9) error as 9 is non object
+
+interface Lengthy{
+    length : number;
+}
+
+function printDoubleLength<T extends Lengthy>(thing : T) : number{
+    return thing.length * 2;
+}
+
+printDoubleLength("adsA");
+
+// DEFAULT TYPE PARAMETERS
+
+function makeEmptyArray<T = number>() : T[]{ // here the default one is nummber 
+    return [];
+}
+
+const strings = makeEmptyArray(); // by default type is number
+
+const strings1 = makeEmptyArray<boolean>; //now it is set to boolean
+
+//GENERIC CLASSES//
+
+interface Song{
+    title: string;
+    creator : string;
+}
+
+interface Video{
+    title: string;
+    creator : string;
+    resolution : string;
+}
+
+class PlayList<T> {
+    public queue: T[] = [];
+    add(el : T){
+        this.queue.push(el)
+    }
+}
+
+const songs = new PlayList<Song>()
+
+const videos = new PlayList<Video>()
+
+
+
+
+
+
+
+
+ 
+

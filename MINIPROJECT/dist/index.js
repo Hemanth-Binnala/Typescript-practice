@@ -68,5 +68,58 @@ function createTodoElement(todo) {
     list.append(newLI);
 }
 form.addEventListener("submit", handleSubmit);
+/////////////////////////GENERICS/////////////////////////
+// Generics are those which the input type and return same type.
+function identity(item) {
+    return item;
+}
+// insteat of "Type" we can write "T"
+function identity1(item) {
+    return item;
+}
+identity(7);
+identity1("hello");
+function getRandomElement(list) {
+    if (list.length === 0) {
+        throw new Error("List cannot be empty");
+    }
+    const randIdx = Math.floor(Math.random() * list.length);
+    return list[randIdx];
+}
+console.log(getRandomElement(["a", "b", "c"]));
+console.log(getRandomElement([1, 34, 556, 345, 344]));
+getRandomElement(["afsdfs", "dsadb", "c"]); // with the list input it can read the type and is called Inferred Generic type
+//  GENERICS WITH MULTIPLE OBJECTS // for multiple use differnt words each 
+function merge(obj1, obj2) {
+    return Object.assign(Object.assign({}, obj1), obj2);
+}
+const combObj = merge({ name: "colt" }, { pets: ["blue", "elton"] });
+merge({ name: "colt" }, 9); // no error though 9 is non obj
+// as of now in mege if we send one obj and other string 
+// there won't be any error but non object won't go to comBobj so to ensure
+// in merge we have only obj we need to add type constraints.
+function merge1(obj1, obj2) {
+    return Object.assign(Object.assign({}, obj1), obj2);
+}
+function printDoubleLength(thing) {
+    return thing.length * 2;
+}
+printDoubleLength("adsA");
+// DEFAULT TYPE PARAMETERS
+function makeEmptyArray() {
+    return [];
+}
+const strings = makeEmptyArray(); // by default type is number
+const strings1 = (makeEmptyArray); //now it is set to boolean
+class PlayList {
+    constructor() {
+        this.queue = [];
+    }
+    add(el) {
+        this.queue.push(el);
+    }
+}
+const songs = new PlayList();
+const videos = new PlayList();
 export {};
 //# sourceMappingURL=index.js.map
