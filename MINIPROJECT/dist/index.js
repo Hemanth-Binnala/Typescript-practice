@@ -121,5 +121,108 @@ class PlayList {
 }
 const songs = new PlayList();
 const videos = new PlayList();
+//////TYPE NARROWING////////////////
+// Typeof Guards
+function triple(value) {
+    if (typeof value === "string") {
+        return value.repeat(3);
+    }
+    return value * 3;
+}
+// Truthiness Guards
+const el = document.getElementById("idk");
+if (el) {
+    el;
+}
+else {
+    el;
+}
+const printLetters = (word) => {
+    if (!word) {
+        word; // string or undefined
+        console.log("No word");
+    }
+    else {
+        for (let c of word) {
+            console.log(c);
+        }
+    }
+};
+// EQUITY NARROWING  // accepts if both are same type based on the cond
+function someDemo(x, y) {
+    if (x === y) {
+        x;
+        y;
+    }
+}
+function getRuntime(media) {
+    if ("numEpisodes" in media) {
+        return media.numEpisodes * media.episodeDuration;
+    }
+    return media.duration;
+}
+console.log(getRuntime({ title: "OG", duration: 140 }));
+console.log(getRuntime({ title: "Omi", numEpisodes: 10, episodeDuration: 30 }));
+//INSTANCEOF NARROWING //  if we are having instance it eill check the instanceOf and executes if the cond is true.
+function printFullDate(date) {
+    if (date instanceof Date) {
+        date;
+        console.log(date.toUTCString());
+    }
+    else {
+        console.log(new Date(date).toUTCString());
+    }
+}
+class User {
+    constructor(username) {
+        this.username = username;
+    }
+}
+class Company {
+    constructor(name) {
+        this.name = name;
+    }
+}
+function printName(entity) {
+    if (entity instanceof User) {
+        entity;
+    }
+    else {
+        entity;
+    }
+}
+function isCat(animal) {
+    return animal.numLives !== undefined;
+}
+function makeNoise(animal) {
+    if (isCat(animal)) {
+        animal;
+        return "meow";
+    }
+    else {
+        animal;
+    }
+}
+function getFarmAnimalSound(animal) {
+    switch (animal.kind) {
+        case ("pig"):
+            return "oink";
+        case ("cow"):
+            return "Mool";
+        case ("rooster"):
+            return "cookoooo";
+        default:
+            const _exhaustivecheck = animal; // Exhaustive check to tell if we miss any case.
+            return _exhaustivecheck;
+    }
+}
+const sai = {
+    name: "jacl",
+    weight: 2,
+    age: 1.5,
+    kind: "rooster"
+};
+console.log(getFarmAnimalSound(sai));
 export {};
+//////////    
 //# sourceMappingURL=index.js.map

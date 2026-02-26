@@ -199,8 +199,176 @@ const songs = new PlayList<Song>()
 
 const videos = new PlayList<Video>()
 
+//////TYPE NARROWING////////////////
 
+// Typeof Guards
 
+function triple(value:string | number){
+    if(typeof value === "string"){
+        return value.repeat(3);
+    }
+    return value * 3
+}
+
+// Truthiness Guards
+
+const el = document.getElementById("idk")
+if(el){
+    el
+}else{
+    el
+}
+
+const printLetters = (word?: string) =>{
+    if(!word){
+        word; // string or undefined
+        console.log("No word")
+    }
+    else{
+       for(let c of word){
+        console.log(c);
+       }
+    }
+}
+
+// EQUITY NARROWING  // accepts if both are same type based on the cond
+
+function someDemo(x: string | number,y:string | boolean){
+     if(x===y){
+        x;
+        y; 
+     }
+}
+
+// IN OPERATOR NARROWING
+
+ interface Movie{
+    title : string,
+    duration : number
+ }
+
+ interface Tvshow{
+    title:string,
+    numEpisodes : number,
+    episodeDuration : number
+ }
+
+ function getRuntime(media : Movie | Tvshow ){
+    if("numEpisodes" in media){
+        return media.numEpisodes * media.episodeDuration;
+    }
+    return media.duration;
+ }
+
+ console.log(getRuntime({title : "OG",duration:140}))
+ console.log( getRuntime({title : "Omi",numEpisodes:10,episodeDuration:30 }))
+
+//INSTANCEOF NARROWING //  if we are having instance it eill check the instanceOf and executes if the cond is true.
+
+function printFullDate(date : string | Date){
+    if(date instanceof Date){
+        date;
+        console.log(date.toUTCString());
+    }else{
+        console.log(new Date(date).toUTCString()); 
+    }
+}
+
+class User{
+    constructor(public username : string){}
+}
+
+class Company{
+     constructor(public name : string){}
+}
+
+function printName(entity : User | Company){
+    if(entity instanceof User){
+        entity
+    }
+    else {
+        entity
+    }
+}
+
+//// TYPE PREDICATES////
+
+interface Cat{
+    name : string;
+    numLives: number;
+}
+
+interface Dog{
+    name : string;
+    bread: string;
+}
+
+function isCat(animal: Cat | Dog) : animal is Cat{ // type predicate
+    return (animal  as Cat).numLives !== undefined
+}
+
+function makeNoise(animal: Cat | Dog) : string | undefined{
+    if(isCat(animal)){
+        animal
+        return "meow"
+    }
+    else{
+        animal
+    }
+}
+
+//////DISCRIMANTED UNIONS /////////  -- if all the properties are same then we use this to diff eaach interface
+
+interface Rooster{
+    name : string;
+    weight: number;
+    age : number;
+    kind : "rooster"   // added
+}
+
+interface Cow{
+    name : string;
+    weight: number;
+    age : number;
+    kind : "cow"        //added
+}
+
+interface Pig{
+    name : string;
+    weight: number;
+    age : number;
+    kind : "pig"          //added
+}
+
+type FarmAnimal = Pig | Rooster | Cow; 
+
+function getFarmAnimalSound(animal : FarmAnimal) {
+    switch(animal.kind){
+        case("pig"):
+            return "oink";
+       
+        case("cow"):
+            return "Mool";
+        
+        case("rooster"):
+            return "cookoooo";
+        default:
+            const _exhaustivecheck : never  = animal; // Exhaustive check to tell if we miss any case.
+            return _exhaustivecheck;
+        }   
+
+    }
+
+    const sai : Rooster = {
+        name : "jacl",
+        weight:2,
+        age:1.5,
+        kind : "rooster"
+    }
+
+console.log(getFarmAnimalSound(sai))
+
+  //////////    
 
 
 
